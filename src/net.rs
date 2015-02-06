@@ -9,7 +9,6 @@ use std::mem;
 use std::raw::{self, TraitObject};
 use std::sync::Arc;
 
-use uany::UnsafeAnyExt;
 use openssl::ssl::{Ssl, SslStream, SslContext};
 use openssl::ssl::SslVerifyMode::SslVerifyNone;
 use openssl::ssl::SslMethod::Sslv23;
@@ -131,7 +130,7 @@ impl<'a> Writer for &'a mut NetworkStream {
     fn flush(&mut self) -> IoResult<()> { (**self).flush() }
 }
 
-impl UnsafeAnyExt for NetworkStream {
+impl NetworkStream {
     unsafe fn downcast_ref_unchecked<T: 'static>(&self) -> &T {
         mem::transmute(mem::transmute::<&NetworkStream,
                                         raw::TraitObject>(self).data)
@@ -367,8 +366,6 @@ fn lift_ssl_error(ssl: SslError) -> IoError {
 
 #[cfg(test)]
 mod tests {
-    use uany::UnsafeAnyExt;
-
     use mock::MockStream;
     use super::NetworkStream;
 

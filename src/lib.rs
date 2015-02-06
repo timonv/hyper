@@ -132,7 +132,6 @@ extern crate url;
 extern crate openssl;
 #[macro_use] extern crate log;
 #[cfg(test)] extern crate test;
-extern crate "unsafe-any" as uany;
 extern crate cookie;
 extern crate unicase;
 
