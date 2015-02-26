@@ -80,7 +80,7 @@ S: NetworkStream + Clone + Send> Server<L> {
         let guard = thread::scoped(move || pool.accept(work, threads));
 
         Ok(Listening {
-            _guard: guard,
+            guard: guard,
             socket: socket,
             acceptor: acceptor
         })
@@ -136,8 +136,8 @@ where S: NetworkStream + Clone, H: Handler {
 
 /// A listening server, which can later be closed.
 pub struct Listening<A = HttpAcceptor> {
-    acceptor: A,
-    _guard: JoinGuard<'static, ()>,
+    pub acceptor: A,
+    pub guard: JoinGuard<'static, ()>,
     /// The socket addresses that the server is bound to.
     pub socket: SocketAddr,
 }
